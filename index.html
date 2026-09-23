@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="MuViProject is creating a new digital home for its work in design, marketing, social media, photography, video, and production." />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>MuViProject — Coming soon</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --canvas: #f1f1ed;
+        --ink: #111210;
+        --muted: #5e615b;
+        --line: rgba(17, 18, 16, .23);
+        --acid: #d8ff37;
+        --acid-ink: #111210;
+        --panel: #dedfd8;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --canvas: #111210;
+          --ink: #f2f2ec;
+          --muted: #a7aaa2;
+          --line: rgba(242, 242, 236, .22);
+          --acid: #d8ff37;
+          --acid-ink: #111210;
+          --panel: #1a1c19;
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html { min-width: 320px; background: var(--canvas); scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        min-height: 100%;
+        overflow-x: hidden;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: "Manrope", Helvetica, sans-serif;
+        text-rendering: optimizeLegibility;
+      }
+
+      a { color: inherit; }
+
+      .page {
+        position: relative;
+        min-height: 100svh;
+        display: grid;
+        grid-template-rows: auto 1fr auto auto;
+        isolation: isolate;
+      }
+
+      .page::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, transparent calc(25% - .5px), var(--line) 25%, transparent calc(25% + .5px)),
+          linear-gradient(90deg, transparent calc(50% - .5px), var(--line) 50%, transparent calc(50% + .5px)),
+          linear-gradient(90deg, transparent calc(75% - .5px), var(--line) 75%, transparent calc(75% + .5px));
+        opacity: .42;
+      }
+
+      .topbar,
+      .hero,
+      .services,
+      .footer {
+        width: min(calc(100% - 48px), 1600px);
+        margin-inline: auto;
+      }
+
+      .topbar {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--line);
+        font-family: "DM Mono", monospace;
+      }
+
+      .status {
+        margin: 0;
+        font-size: 11px;
+        line-height: 1.3;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+      }
+
+      .status::before {
+        content: "";
+        width: 9px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--acid);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--acid) 14%, transparent);
+        animation: pulse 2.4s ease-in-out infinite;
+      }
+
+      .language-switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 3px;
+        border: 1px solid var(--line);
+      }
+
+      .language-switch button {
+        min-width: 36px;
+        padding: 7px 8px;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-size: 10px;
+        line-height: 1;
+        letter-spacing: .1em;
+        cursor: pointer;
+      }
+
+      .language-switch button[aria-pressed="true"] {
+        background: var(--ink);
+        color: var(--canvas);
+      }
+
+      .language-switch button:focus-visible {
+        outline: 2px solid var(--acid);
+        outline-offset: 2px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(250px, 31%);
+        grid-template-areas:
+          "eyebrow meta"
+          "title title"
+          "intro action";
+        align-content: center;
+        column-gap: 44px;
+        row-gap: clamp(22px, 3.2vh, 38px);
+        padding-block: clamp(58px, 9vh, 120px);
+      }
+
+      .eyebrow {
+        grid-area: eyebrow;
+        margin: 0;
+        font-family: "DM Mono", monospace;
+        font-size: 12px;
+        line-height: 1.4;
+        letter-spacing: .09em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow span { color: var(--muted); }
+
+      .meta {
+        grid-area: meta;
+        margin: 0;
+        justify-self: end;
+        text-align: right;
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        line-height: 1.5;
+        letter-spacing: .04em;
+      }
+
+      h1 {
+        grid-area: title;
+        margin: 0;
+        max-width: 12ch;
+        font-size: clamp(62px, 10.4vw, 170px);
+        font-weight: 500;
+        line-height: .82;
+        letter-spacing: -.07em;
+        text-transform: uppercase;
+      }
+
+      h1 .outline {
+        display: inline-block;
+        color: transparent;
+        -webkit-text-stroke: 1.5px var(--ink);
+      }
+
+      .intro {
+        grid-area: intro;
+        align-self: end;
+        max-width: 620px;
+        margin: 0;
+        padding-left: clamp(0px, 8vw, 128px);
+        color: var(--muted);
+        font-size: clamp(15px, 1.25vw, 19px);
+        line-height: 1.65;
+      }
+
+      .action-wrap {
+        grid-area: action;
+        align-self: end;
+        justify-self: end;
+        width: 100%;
+        max-width: 350px;
+      }
+
+      .contact {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        padding: 19px 21px;
+        background: var(--acid);
+        color: var(--acid-ink);
+        text-decoration: none;
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        transition: background-color .2s ease, color .2s ease;
+      }
+
+      .contact::after {
+        content: "↗";
+        font-family: "Manrope", sans-serif;
+        font-size: 20px;
+        line-height: 1;
+        transition: transform .2s ease;
+      }
+
+      .contact:hover::after,
+      .contact:focus-visible::after { transform: translate(3px, -3px); }
+
+      .contact:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 4px;
+      }
+
+      .services {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .service {
+        position: relative;
+        min-height: 116px;
+        padding: 24px 28px 22px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 22px;
+      }
+
+      .service + .service {
+        padding-left: 28px;
+        border-left: 1px solid var(--line);
+      }
+
+      .service-number {
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: .1em;
+      }
+
+      .service-name {
+        margin: 0;
+        font-size: clamp(17px, 1.5vw, 23px);
+        font-weight: 500;
+        letter-spacing: -.025em;
+      }
+
+      .footer {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding-bottom: env(safe-area-inset-bottom);
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        line-height: 1.4;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+      }
+
+      .footer p { margin: 0; }
+
+      .footer .mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--ink);
+      }
+
+      .footer .mark::before {
+        content: "";
+        width: 17px;
+        height: 1px;
+        background: currentColor;
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(.78); opacity: .68; }
+        50% { transform: scale(1); opacity: 1; }
+      }
+
+      @media (max-width: 760px) {
+        .page::before {
+          background: linear-gradient(90deg, transparent calc(50% - .5px), var(--line) 50%, transparent calc(50% + .5px));
+        }
+
+        .topbar,
+        .hero,
+        .services,
+        .footer { width: calc(100% - 32px); }
+
+        .topbar { min-height: 64px; }
+
+        .hero {
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "eyebrow"
+            "title"
+            "meta"
+            "intro"
+            "action";
+          gap: 25px;
+          padding-block: 48px 42px;
+        }
+
+        h1 {
+          max-width: 8ch;
+          font-size: clamp(58px, 20.2vw, 100px);
+          line-height: .84;
+        }
+
+        .meta {
+          justify-self: start;
+          text-align: left;
+        }
+
+        .intro {
+          padding-left: 0;
+          max-width: 42ch;
+          font-size: 14px;
+          line-height: 1.62;
+        }
+
+        .action-wrap {
+          justify-self: stretch;
+          max-width: none;
+          margin-top: 6px;
+        }
+
+        .services {
+          grid-template-columns: 1fr;
+        }
+
+        .service {
+          min-height: auto;
+          padding: 18px 0;
+          flex-direction: row;
+          align-items: baseline;
+          gap: 20px;
+        }
+
+        .service + .service {
+          padding-left: 0;
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+
+        .service-name { text-align: right; }
+
+        .footer {
+          min-height: 88px;
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+          gap: 7px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .topbar,
+        .hero,
+        .services,
+        .footer { width: calc(100% - 24px); }
+        h1 { font-size: 58px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar" data-i18n-aria="siteStatus">
+        <p class="status" data-i18n="status">Website in progress</p>
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="es" aria-pressed="false">ES</button>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="headline">
+        <p class="eyebrow"><span data-i18n="eyebrow">( A new chapter )</span> / MuViProject</p>
+        <p class="meta" data-i18n-html="meta">Creative studio<br />Ideas + production</p>
+        <h1 id="headline" data-i18n-html="headline">Ideas in <span class="outline">motion.</span></h1>
+        <p class="intro" data-i18n="intro">We’re building a new digital home for our work. In the meantime, we keep creating stories, images, and experiences with purpose.</p>
+        <div class="action-wrap">
+          <a class="contact" href="mailto:musadaniel@gmail.com?subject=Project%20for%20MuViProject" data-i18n="contact">Let’s talk about your project</a>
+        </div>
+      </section>
+
+      <section class="services" data-i18n-aria="services">
+        <div class="service">
+          <span class="service-number">01</span>
+          <p class="service-name" data-i18n="service1">Design &amp; creative direction</p>
+        </div>
+        <div class="service">
+          <span class="service-number">02</span>
+          <p class="service-name" data-i18n="service2">Marketing &amp; social media</p>
+        </div>
+        <div class="service">
+          <span class="service-number">03</span>
+          <p class="service-name" data-i18n="service3">Photography &amp; video</p>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p class="mark" data-i18n="soon">Coming soon</p>
+        <p>© 2026 MuViProject</p>
+      </footer>
+    </main>
+    <script>
+      (function () {
+        var copy = {
+          en: {
+            title: "MuViProject — Coming soon",
+            description: "MuViProject is creating a new digital home for its work in design, marketing, social media, photography, video, and production.",
+            siteStatus: "Website status",
+            status: "Website in progress",
+            eyebrow: "( A new chapter )",
+            meta: "Creative studio<br />Ideas + production",
+            headline: "Ideas in <span class=\"outline\">motion.</span>",
+            intro: "We’re building a new digital home for our work. In the meantime, we keep creating stories, images, and experiences with purpose.",
+            contact: "Let’s talk about your project",
+            subject: "Project for MuViProject",
+            services: "Areas of work",
+            service1: "Design & creative direction",
+            service2: "Marketing & social media",
+            service3: "Photography & video",
+            soon: "Coming soon",
+            language: "Language"
+          },
+          es: {
+            title: "MuViProject — En renovación",
+            description: "MuViProject está preparando una nueva experiencia digital para presentar su trabajo en diseño, marketing, redes sociales, fotografía, video y producción.",
+            siteStatus: "Estado del sitio",
+            status: "Sitio en renovación",
+            eyebrow: "( Nueva etapa )",
+            meta: "Estudio creativo<br />Ideas + producción",
+            headline: "Ideas que se <span class=\"outline\">mueven.</span>",
+            intro: "Estamos construyendo una nueva casa digital para nuestro trabajo. Mientras tanto, seguimos creando historias, imágenes y experiencias con intención.",
+            contact: "Hablemos de tu proyecto",
+            subject: "Proyecto para MuViProject",
+            services: "Áreas de trabajo",
+            service1: "Diseño & dirección creativa",
+            service2: "Marketing & redes sociales",
+            service3: "Fotografía & video",
+            soon: "Próximamente",
+            language: "Idioma"
+          }
+        };
+
+        var description = document.querySelector('meta[name="description"]');
+        var contact = document.querySelector('.contact');
+        var switcher = document.querySelector('.language-switch');
+        var buttons = document.querySelectorAll('[data-lang]');
+
+        function setLanguage(lang) {
+          var text = copy[lang];
+          document.documentElement.lang = lang;
+          document.title = text.title;
+          description.setAttribute('content', text.description);
+          switcher.setAttribute('aria-label', text.language);
+
+          document.querySelectorAll('[data-i18n]').forEach(function (element) {
+            element.textContent = text[element.getAttribute('data-i18n')];
+          });
+          document.querySelectorAll('[data-i18n-html]').forEach(function (element) {
+            element.innerHTML = text[element.getAttribute('data-i18n-html')];
+          });
+          document.querySelectorAll('[data-i18n-aria]').forEach(function (element) {
+            element.setAttribute('aria-label', text[element.getAttribute('data-i18n-aria')]);
+          });
+          buttons.forEach(function (button) {
+            button.setAttribute('aria-pressed', String(button.getAttribute('data-lang') === lang));
+          });
+          contact.href = 'mailto:musadaniel@gmail.com?subject=' + encodeURIComponent(text.subject);
+        }
+
+        buttons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            setLanguage(button.getAttribute('data-lang'));
+          });
+        });
+      }());
+    </script>
+  </body>
+</html>
